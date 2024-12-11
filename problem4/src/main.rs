@@ -10,16 +10,18 @@ fn main() {
     }
 }
 
+fn calculate_range_of_products(current_number: u64, upper_limit: u64) -> impl Iterator<Item = u64> {
+    (current_number..=upper_limit)
+        .rev()
+        .map(move |other_number| current_number * other_number)
+}
+
 fn find_largest_palindrome_by_factor_length(length: usize) -> Option<u64> {
     let upper_limit = pow(10, length) - 1;
     let first_item = pow(10, length - 1);
     (first_item..=upper_limit)
         .rev()
-        .flat_map(|number| {
-            (number..=upper_limit)
-                .rev()
-                .map(move |other| number * other)
-        })
+        .flat_map(|current_number| calculate_range_of_products(current_number, upper_limit))
         .filter(|number| is_palindrome(number))
         .max()
 }
