@@ -15,7 +15,7 @@ struct Collatz {
 }
 
 fn calculate_collatz_length(starting_number: u64) -> Collatz {
-    let mut length = 0;
+    let mut length = 1;
     let mut current_number = starting_number;
     while current_number != 1 {
         if current_number % 2 == 0 {
