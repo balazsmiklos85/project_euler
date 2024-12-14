@@ -8,18 +8,16 @@ impl Sum {
     }
 
     pub fn add_first(&mut self, previous: &Sum) {
-        if previous.len() == 0 {
-            return;
+        if let Some(first) = previous.numbers.first() {
+            self.numbers[0] += first
         }
-        self.numbers[0] += previous.numbers[0];
     }
 
     pub fn add_last(&mut self, previous: &Sum) {
-        if self.len() == 1 {
-            return;
+        if let Some(last) = previous.numbers.last() {
+            let last_index = self.len() - 1;
+            self.numbers[last_index] += last;
         }
-        let last = self.len() - 1;
-        self.numbers[last] += previous.numbers[previous.len() - 1];
     }
 
     pub fn add_middle(&mut self, previous: &Sum) {
