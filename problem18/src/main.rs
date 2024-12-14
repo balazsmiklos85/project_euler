@@ -64,9 +64,9 @@ impl Row {
             result[0] += sum.numbers[0];
         }
         if sum_len > 1 {
-            for i in 1..=result_len - 2 {
+            (1..=result_len - 2).for_each(|i| {
                 result[i] += sum.numbers[i - 1].max(sum.numbers[i]);
-            }
+            });
         }
         if sum_len > 0 && result_len > 1 {
             result[result_len - 1] += sum.numbers[sum_len - 1];
