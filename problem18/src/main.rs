@@ -57,27 +57,41 @@ impl Row {
     }
 
     fn add_to_sum(&self, sum: Sum) -> Sum {
-        let mut result = self.numbers.clone();
-        let sum_len = sum.len();
-        let result_len = result.len();
-        if sum_len > 0 {
-            result[0] += sum.numbers[0];
-        }
-        if sum_len > 1 {
-            (1..=result_len - 2).for_each(|i| {
-                result[i] += sum.numbers[i - 1].max(sum.numbers[i]);
-            });
-        }
-        if sum_len > 0 && result_len > 1 {
-            result[result_len - 1] += sum.numbers[sum_len - 1];
-        }
-        Sum::new(result)
+        let mut result = Sum::new(self.numbers.clone());
+        result.add_first(&sum);
+        result.add_middle(&sum);
+        result.add_last(&sum);
+        result
     }
 }
 
 impl Sum {
     fn new(numbers: Vec<u64>) -> Sum {
         Sum { numbers }
+    }
+
+    fn add_first(&mut self, previous_sum: &Sum) {
+        if previous_sum.len() == 0 {
+            return;
+        }
+        self.numbers[0] += previous_sum.numbers[0];
+    }
+
+    fn add_last(&mut self, previous_sum: &Sum) {
+        if self.len() == 1 {
+            return;
+        }
+        let last = self.len() - 1;
+        self.numbers[last] += previous_sum.numbers[previous_sum.len() - 1];
+    }
+
+    fn add_middle(&mut self, previous_sum: &Sum) {
+        if previous_sum.len() < 2 {
+            return;
+        }
+        (1..=self.len() - 2).for_each(|i| {
+            self.numbers[i] += previous_sum.numbers[i - 1].max(previous_sum.numbers[i]);
+        });
     }
 
     fn len(&self) -> usize {
